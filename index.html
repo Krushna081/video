@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Video Player</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .controls button {
+            font-size: 24px;
+            margin: 10px;
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        body,
+        html {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: black;
+            overflow: hidden;
+        }
+
+        .video-container {
+            width: 100%;
+            max-width: 1024px;
+            /* Approximate width of a 10-inch laptop */
+            height: auto;
+            aspect-ratio: 16/9;
+            /* Standard video aspect ratio */
+            background-color: black;
+        }
+
+        video {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            cursor: pointer;
+        }
+
+        .video-title {
+            color: white;
+            text-align: center;
+            margin-top: 10px;
+        }
+    </style>
+    <style>
+        @media (max-width: 600px) {
+            body,
+            html {
+                width: 100vw;
+                height: 100vh;
+                padding: 0;
+                margin: 0;
+                display: block;
+                background: black;
+                overflow: auto;
+            }
+
+            .video-container {
+                max-width: 100vw;
+                width: 100vw;
+                aspect-ratio: 16/9;
+                margin: 0 auto;
+            }
+
+            video {
+                width: 100vw;
+                height: auto;
+                max-height: 50vh;
+            }
+
+            .controls {
+                display: flex;
+                justify-content: center;
+                margin: 8px 0;
+            }
+
+            .controls button {
+                font-size: 22px;
+                margin: 0 8px;
+                padding: 12px 18px;
+                border-radius: 8px;
+            }
+
+            .video-title {
+                font-size: 15px;
+                margin-top: 8px;
+                color: #fff;
+                text-align: center;
+                word-break: break-all;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="controls">
+        <button onclick="prevvideos()">⏮️</button>
+    </div>
+    <div class="video-container">
+        <video id="videoPlayer" controls autoplay playsinline></video>
+    </div>
+    <div class="controls">
+        <button onclick="nextvideos()">⏭️</button>
+    </div>
+    <div class="video-title" id="videoTitle"></div>
+    <script>
+        const videos = [
+            "video0.5.mp4",
+            "video (1).mp4",
+            "video (2).mp4",
+            "video (3).mp4",
+            "video (4).mp4",
+            "video (5).mp4",
+            "video (6).mp4", "video4.5.mp4",
+            "video (7).mp4",
+            "video (8).mp4",
+            "video (9).mp4",
+
+
+            "video1.mp4",
+            "video2.mp4",
+            "video3.5.mp4",
+            "video3.mp4",
+            "video4.mp4",
+
+            "video5.mp4",
+            "video6.mp4",
+            "video7.mp4",
+            "video8.mp4",
+            "video9.mp4",
+            "video10.mp4",
+            "video11.mp4",
+            "video12.mp4",
+            "video13.mp4",
+            "video14.mp4", "video0.4.mp3",
+            "video15.mp4",
+            "video16.mp4",
+            "video17.mp4",
+            "video18.mp4",
+            "video19.mp4",
+            "video20.mp4"
+        ];
+
+        let currentIndex = 0;
+        const videoPlayer = document.getElementById('videoPlayer');
+        const videoTitle = document.getElementById('videoTitle');
+
+        function playVideo(index) {
+            if (index >= videos.length) {
+                currentIndex = 0; // Loop back to the first video
+            }
+            videoPlayer.src = `videos/${videos[currentIndex]}`;
+            videoTitle.textContent = videos[currentIndex]; // Update the video title
+            videoPlayer.play().catch(error => {
+                console.error('Error attempting to play video:', error);
+            });
+        }
+
+        videoPlayer.addEventListener('ended', () => {
+            currentIndex++;
+            playVideo(currentIndex);
+        });
+
+        videoPlayer.addEventListener('click', () => {
+            if (videoPlayer.muted) {
+                videoPlayer.muted = false; // Unmute on first click
+            } else {
+                currentIndex++;
+                playVideo(currentIndex);
+            }
+        });
+
+        function prevvideos() {
+            currentIndex = (currentIndex - 1 + videos.length) % videos.length;
+            playVideo(currentIndex);
+        }
+
+        function nextvideos() {
+            currentIndex = (currentIndex + 1) % videos.length;
+            playVideo(currentIndex);
+        }
+
+        // Start playing the first video
+        playVideo(currentIndex);
+    </script>
+</body>
+
+</html>
